@@ -1,3 +1,16 @@
+
 import { io } from "socket.io-client";
-const BACKEND = "https://chatbot-e82s.onrender.com";
-export const socket = io(BACKEND, { autoConnect: true });
+
+
+const API = import.meta.env.VITE_BACKEND_URL;
+const socketUrl = API.replace(/\/$/, "");
+
+export const socket = io(socketUrl, {
+    path: "/socket.io",
+    transports: ["websocket", "polling"],
+    autoConnect: true,
+    secure: socketUrl.startsWith("https://")
+});
+
+// optional debug
+console.log("Socket URL:", socketUrl, "secure:", socketUrl.startsWith("https://"));
